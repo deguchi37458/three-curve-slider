@@ -10,21 +10,54 @@
         margin: 0;
         padding: 0;
       }
-      #scroll-container {
+      .wrapper {
         position: relative;
         width: 100%;
-        height: 300vh;
+      }
+      .sec {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .sec a {
+        display: inline-block;
+        width: 600px;
+        height: 600px;
+      }
+      .sec img {
+        width: 100%;
       }
       .webgl {
         position: fixed;
+        z-index: 10;
         top: 0;
         left: 0;
+        pointer-events: none;
       }
     </style>
   </head>
   <body>
-    <canvas class="webgl"></canvas>
-    <div id="scroll-container"></div>
+    <main>
+      <canvas class="webgl"></canvas>
+      <div class="wrapper">
+        <section class="sec _01">
+          <a href="#">
+            <img src="./images/image01.jpg" alt="">
+          </a>
+        </section>
+        <section class="sec _02">
+          <a href="#">
+            <img src="./images/image02.jpg" alt="">
+          </a>
+        </section>
+        <section class="sec _03">
+          <a href="#">
+            <img src="./images/image03.jpg" alt="">
+          </a>
+        </section>
+      </div>
+    </main>
     <script src="bundle.js"></script>
   </body>
 </html>

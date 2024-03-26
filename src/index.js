@@ -54,39 +54,52 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Mesh
-const geometry = new THREE.PlaneGeometry(600, 600, 500, 500);
-const material = new THREE.ShaderMaterial({
-  vertexShader: vertexShader,
-  fragmentShader: fragmentShader,
-  side: THREE.DoubleSide,
-  transparent: true,
-  uniforms: {
-    uTexture: {
-      type: 't',
-      value: textureLoader.load(img)
-    },
-    curlR: {
-      type: 'f',
-      value: -900
-    },   
-  }
-})
+let meshes = [];
+function createMesh(img) {
+  const texture = textureLoader.load(img.src);
+  const geometry = new THREE.PlaneGeometry(600, 600, 500, 500);
+  const material = new THREE.ShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    side: THREE.DoubleSide,
+    transparent: true,
+    uniforms: {
+      uTexture: {
+        type: 't',
+        value: texture
+      },
+      curlR: {
+        type: 'f',
+        value: -900
+      },   
+    }
+  })
+  const mesh = new THREE.Mesh(geometry, material)
+  meshes.push(mesh);
+  return mesh
+}
 
-const mesh1 = new THREE.Mesh(geometry, material);
-const mesh2 = new THREE.Mesh(geometry, material);
-const mesh3 = new THREE.Mesh(geometry, material);
-const mesh4 = new THREE.Mesh(geometry, material);
-const mesh5 = new THREE.Mesh(geometry, material);
-scene.add(mesh1, mesh2, mesh3, mesh4, mesh5);
-
-const meshes = [mesh1, mesh2, mesh3, mesh4, mesh5];
+const imgs = [...document.querySelectorAll('.sec img')];
+for (const img of imgs) {
+  const mesh = createMesh(img);
+  scene.add(mesh)
+}
 
 // Animate
 let speed = 0;
 let rotation = 0
-window.addEventListener('wheel', (e) => {
-  speed += e.deltaY * 0.0002;
-  console.log(speed);
+// window.addEventListener('wheel', (e) => {
+//   speed += e.deltaY * -0.0002;
+//   // console.log(speed);
+// })
+
+let lastScrollTop = 0;
+window.addEventListener('scroll', () => {
+  const currentScrollTop = window.scrollY;
+  const deltaY = currentScrollTop - lastScrollTop;
+  // console.log(deltaY);
+  lastScrollTop = currentScrollTop;
+  speed += deltaY * -0.00007;
 })
 
 function rot() {
@@ -94,36 +107,31 @@ function rot() {
   rotation += speed;
   speed *= 0.93;
   
-  mesh1.rotation.x = -(rotation)
-  mesh1.position.y = r * Math.sin(rotation)
-  mesh1.position.z = -r + r * Math.cos(rotation)
+  meshes[0].rotation.x = (rotation)
+  meshes[0].position.y = -r * Math.sin(rotation)
+  meshes[0].position.z = -r + r * Math.cos(rotation)
 
-  mesh2.rotation.x = -(rotation + Math.PI / 4)
-  mesh2.position.y = r * Math.sin(rotation + Math.PI / 4)
-  mesh2.position.z = -r + r * Math.cos(rotation + Math.PI / 4)
+  meshes[1].rotation.x = (rotation + Math.PI / 4)
+  meshes[1].position.y = -r * Math.sin(rotation + Math.PI / 4)
+  meshes[1].position.z = -r + r * Math.cos(rotation + Math.PI / 4)
   
-  mesh3.rotation.x = -(rotation + Math.PI / 2)
-  mesh3.position.y = r * Math.sin(rotation + (Math.PI / 2))
-  mesh3.position.z = -r + r * Math.cos(rotation + (Math.PI / 2))
-  // console.log(200 * Math.cos(Math.PI / 2));
+  meshes[2].rotation.x = (rotation + Math.PI / 2)
+  meshes[2].position.y = -r * Math.sin(rotation + (Math.PI / 2))
+  meshes[2].position.z = -r + r * Math.cos(rotation + (Math.PI / 2))
   
-  mesh4.rotation.x = -(rotation + Math.PI)
-  mesh4.position.y = r * Math.sin(rotation + Math.PI)
-  mesh4.position.z = -r + r * Math.cos(rotation + Math.PI)
+  // mesh4.rotation.x = (rotation + Math.PI)
+  // mesh4.position.y = -r * Math.sin(rotation + Math.PI)
+  // mesh4.position.z = -r + r * Math.cos(rotation + Math.PI)
 
-  mesh5.rotation.x = -(rotation + (3 * (Math.PI / 2)))
-  mesh5.position.y = r * Math.sin(rotation + (3 * (Math.PI / 2)))
-  mesh5.position.z = -r + r * Math.cos(rotation + (3 * (Math.PI / 2)))
+  // mesh5.rotation.x = (rotation + (3 * (Math.PI / 2)))
+  // mesh5.position.y = -r * Math.sin(rotation + (3 * (Math.PI / 2)))
+  // mesh5.position.z = -r + r * Math.cos(rotation + (3 * (Math.PI / 2)))
 
   window.requestAnimationFrame(rot)
 }
 rot();
 
 const animate = () => {
-  // material.uniforms.uTime.value = clock.getElapsedTime();
-  
-  // const elapsedTime = clock.getElapsedTime();
-
   // Update controls
   controls.update();
 
