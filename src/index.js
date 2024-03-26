@@ -31,7 +31,6 @@ const fov = 50;
 const fovRad = (fov / 2) * (Math.PI / 180);
 let dist = (window.innerHeight / 2) / Math.tan(fovRad);
 const camera = new THREE.PerspectiveCamera(
-  // 50,
   fov,
   window.innerWidth / window.innerHeight,
   0.1,
@@ -55,7 +54,7 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Mesh
-const geometry = new THREE.PlaneGeometry(100, 100, 100, 100);
+const geometry = new THREE.PlaneGeometry(600, 600, 500, 500);
 const material = new THREE.ShaderMaterial({
   vertexShader: vertexShader,
   fragmentShader: fragmentShader,
@@ -68,14 +67,58 @@ const material = new THREE.ShaderMaterial({
     },
     curlR: {
       type: 'f',
-      value: 1.5
+      value: -900
     },   
   }
 })
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+
+const mesh1 = new THREE.Mesh(geometry, material);
+const mesh2 = new THREE.Mesh(geometry, material);
+const mesh3 = new THREE.Mesh(geometry, material);
+const mesh4 = new THREE.Mesh(geometry, material);
+const mesh5 = new THREE.Mesh(geometry, material);
+scene.add(mesh1, mesh2, mesh3, mesh4, mesh5);
+
+const meshes = [mesh1, mesh2, mesh3, mesh4, mesh5];
 
 // Animate
+let speed = 0;
+let rotation = 0
+window.addEventListener('wheel', (e) => {
+  speed += e.deltaY * 0.0002;
+  console.log(speed);
+})
+
+function rot() {
+  const r = 900 // 原点からの距離
+  rotation += speed;
+  speed *= 0.93;
+  
+  mesh1.rotation.x = -(rotation)
+  mesh1.position.y = r * Math.sin(rotation)
+  mesh1.position.z = -r + r * Math.cos(rotation)
+
+  mesh2.rotation.x = -(rotation + Math.PI / 4)
+  mesh2.position.y = r * Math.sin(rotation + Math.PI / 4)
+  mesh2.position.z = -r + r * Math.cos(rotation + Math.PI / 4)
+  
+  mesh3.rotation.x = -(rotation + Math.PI / 2)
+  mesh3.position.y = r * Math.sin(rotation + (Math.PI / 2))
+  mesh3.position.z = -r + r * Math.cos(rotation + (Math.PI / 2))
+  // console.log(200 * Math.cos(Math.PI / 2));
+  
+  mesh4.rotation.x = -(rotation + Math.PI)
+  mesh4.position.y = r * Math.sin(rotation + Math.PI)
+  mesh4.position.z = -r + r * Math.cos(rotation + Math.PI)
+
+  mesh5.rotation.x = -(rotation + (3 * (Math.PI / 2)))
+  mesh5.position.y = r * Math.sin(rotation + (3 * (Math.PI / 2)))
+  mesh5.position.z = -r + r * Math.cos(rotation + (3 * (Math.PI / 2)))
+
+  window.requestAnimationFrame(rot)
+}
+rot();
+
 const animate = () => {
   // material.uniforms.uTime.value = clock.getElapsedTime();
   
@@ -106,3 +149,7 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+
+// Helper 
+const AxesHelper = new THREE.AxesHelper();
+scene.add(AxesHelper);
