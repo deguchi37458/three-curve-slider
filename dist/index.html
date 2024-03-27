@@ -21,16 +21,30 @@
         justify-content: center;
       }
       .sec a {
-        display: inline-block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 600px;
         height: 600px;
+        text-decoration: none;
+      }
+      .sec a:hover h1{
+        scale: 1.1;
+      }
+      .sec h1 {
+        color: #fff;
+        font-size: 60px;
+        transition: scale 0.3s;
       }
       .sec img {
         width: 100%;
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
       }
       .webgl {
         position: fixed;
-        z-index: 10;
+        /* z-index: 10; */
         top: 0;
         left: 0;
         pointer-events: none;
@@ -43,16 +57,19 @@
       <div class="wrapper">
         <section class="sec _01">
           <a href="#">
+            <h1>Section 1</h1>
             <img src="./images/image01.jpg" alt="">
           </a>
         </section>
         <section class="sec _02">
           <a href="#">
+            <h1>Section 2</h1>
             <img src="./images/image02.jpg" alt="">
           </a>
         </section>
         <section class="sec _03">
           <a href="#">
+            <h1>Section 3</h1>
             <img src="./images/image03.jpg" alt="">
           </a>
         </section>

@@ -9,7 +9,7 @@ import gsap from 'gsap';
 import img from "./images/image01.jpg"
 
 // Debug
-const dat = new GUI();
+// const dat = new GUI();
 
 // Sizes
 const sizes = {
@@ -95,17 +95,23 @@ let rotation = 0
 
 let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
-  const currentScrollTop = window.scrollY;
-  const deltaY = currentScrollTop - lastScrollTop;
-  // console.log(deltaY);
-  lastScrollTop = currentScrollTop;
-  speed += deltaY * -0.00007;
+  console.log(window.scrollY);
+  console.log(sizes.height)
+  // rotation = (Math.PI * window.scrollY) / (4 * sizes.height)
+  console.log((Math.PI * window.scrollY) / (4 * sizes.height));
+  rotation = (-(Math.PI * window.scrollY) / (4 * sizes.height))
+  // console.log(rotation);
+  // const currentScrollTop = window.scrollY;
+  // const deltaY = currentScrollTop - lastScrollTop;
+  // // console.log(deltaY);
+  // lastScrollTop = currentScrollTop;
+  // speed += deltaY * -0.00007;
 })
 
 function rot() {
   const r = 900 // 原点からの距離
-  rotation += speed;
-  speed *= 0.93;
+  // rotation += speed;
+  // speed *= 0.93;
   
   meshes[0].rotation.x = (rotation)
   meshes[0].position.y = -r * Math.sin(rotation)
