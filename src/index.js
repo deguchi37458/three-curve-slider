@@ -3,10 +3,7 @@ import fragmentShader from "./shader/fragmentShader";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera';
-import GUI from 'lil-gui'; 
-import gsap from 'gsap'; 
-
-import img from "./images/image01.jpg"
+// import GUI from 'lil-gui';  
 
 // Debug
 // const dat = new GUI();
@@ -55,6 +52,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Mesh
 let meshes = [];
+const r = 900 // 原点からの距離
 function createMesh(img) {
   const texture = textureLoader.load(img.src);
   const geometry = new THREE.PlaneGeometry(600, 600, 500, 500);
@@ -65,13 +63,11 @@ function createMesh(img) {
     transparent: true,
     uniforms: {
       uTexture: {
-        type: 't',
         value: texture
       },
       curlR: {
-        type: 'f',
         value: -900
-      },   
+      },
     }
   })
   const mesh = new THREE.Mesh(geometry, material)
@@ -86,33 +82,12 @@ for (const img of imgs) {
 }
 
 // Animate
-let speed = 0;
 let rotation = 0
-// window.addEventListener('wheel', (e) => {
-//   speed += e.deltaY * -0.0002;
-//   // console.log(speed);
-// })
-
-let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
-  console.log(window.scrollY);
-  console.log(sizes.height)
-  // rotation = (Math.PI * window.scrollY) / (4 * sizes.height)
-  console.log((Math.PI * window.scrollY) / (4 * sizes.height));
   rotation = (-(Math.PI * window.scrollY) / (4 * sizes.height))
-  // console.log(rotation);
-  // const currentScrollTop = window.scrollY;
-  // const deltaY = currentScrollTop - lastScrollTop;
-  // // console.log(deltaY);
-  // lastScrollTop = currentScrollTop;
-  // speed += deltaY * -0.00007;
 })
 
 function rot() {
-  const r = 900 // 原点からの距離
-  // rotation += speed;
-  // speed *= 0.93;
-  
   meshes[0].rotation.x = (rotation)
   meshes[0].position.y = -r * Math.sin(rotation)
   meshes[0].position.z = -r + r * Math.cos(rotation)
@@ -124,14 +99,6 @@ function rot() {
   meshes[2].rotation.x = (rotation + Math.PI / 2)
   meshes[2].position.y = -r * Math.sin(rotation + (Math.PI / 2))
   meshes[2].position.z = -r + r * Math.cos(rotation + (Math.PI / 2))
-  
-  // mesh4.rotation.x = (rotation + Math.PI)
-  // mesh4.position.y = -r * Math.sin(rotation + Math.PI)
-  // mesh4.position.z = -r + r * Math.cos(rotation + Math.PI)
-
-  // mesh5.rotation.x = (rotation + (3 * (Math.PI / 2)))
-  // mesh5.position.y = -r * Math.sin(rotation + (3 * (Math.PI / 2)))
-  // mesh5.position.z = -r + r * Math.cos(rotation + (3 * (Math.PI / 2)))
 
   window.requestAnimationFrame(rot)
 }
