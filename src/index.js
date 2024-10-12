@@ -31,9 +31,9 @@ const camera = new THREE.PerspectiveCamera(
   fov,
   window.innerWidth / window.innerHeight,
   0.1,
-  1000
+  2000
 );
-camera.position.z = dist;
+camera.position.z = dist ;
 scene.add(camera);
 
 // Controls
